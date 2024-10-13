@@ -1,2 +1,0 @@
-# BitBucket
-Devopes_ISE
