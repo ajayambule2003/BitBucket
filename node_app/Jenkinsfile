@@ -2,16 +2,16 @@ pipeline {
     agent any
 
     environment {
-        REMOTE_SERVER = 'http://localhost:3000'
-        REMOTE_PATH = '/path/to/your/app/on/server'
-        SSH_PRIVATE_KEY = credentials('git@github.com:ajayambule2003/BitBucket.git') // The SSH private key stored in Jenkins credentials
+        REMOTE_SERVER = 'http://localhost:3030'
+        REMOTE_PATH = 'A:/Github/DEVOPS_ISE/BitBucket/app/'
+        SSH_PRIVATE_KEY = credentials('git@github.com:ajayambule2003/BitBucket.git')  
         GIT_REPO = 'https://github.com/ajayambule2003/BitBucket.git'
     }
 
     stages {
         stage('Clone Repository') {
             steps {
-                // Clone the Git repository from GitHub (or another Git provider)
+                
                 git branch: 'main', url: "${GIT_REPO}"
             }
         }
@@ -19,7 +19,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    // Run npm install to install dependencies
+                    
                     sh 'npm install'
                 }
             }
@@ -28,7 +28,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    // Run tests if necessary (Optional)
+                    
                     sh 'npm test'
                 }
             }
@@ -37,17 +37,15 @@ pipeline {
         stage('Deploy to Remote Server') {
             steps {
                 script {
-                    // Archive the application files into a zip (or use scp to copy the files directly)
+                    
                     sh 'tar -czf app.tar.gz .'
-
-                    // Use SCP to copy the app files to the remote server
+ 
                     sh """
-                        scp -i ${git@github.com:ajayambule2003/BitBucket.git} app.tar.gz ${REMOTE_SERVER}:${REMOTE_PATH}
+                        scp -i ${SSH_PRIVATE_KEY} app.tar.gz ${REMOTE_SERVER}:${REMOTE_PATH}
                     """
-
-                    // SSH into the server and perform deployment steps
+ 
                     sh """
-                        ssh -i ${git@github.com:ajayambule2003/BitBucket.git} ${REMOTE_SERVER} <<EOF
+                        ssh -i ${SSH_PRIVATE_KEY} ${REMOTE_SERVER} <<EOF
                             cd ${REMOTE_PATH}
                             tar -xzf app.tar.gz
                             cd your-app-folder
