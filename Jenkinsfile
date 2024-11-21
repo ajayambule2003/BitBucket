@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        REMOTE_SERVER = 'http://localhost:3030'
+        REMOTE_SERVER = 'http://localhost:3030' 
         REMOTE_PATH = 'A:/Github/BitBucket'
         SSH_PRIVATE_KEY = credentials('git@github.com:ajayambule2003/BitBucket.git')  
         GIT_REPO = 'https://github.com/ajayambule2003/BitBucket.git'
